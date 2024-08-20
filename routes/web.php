@@ -3,6 +3,7 @@
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MahasiswaAktifController;
+use App\Http\Controllers\PKLController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,6 +40,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('mahasiswa-aktif', MahasiswaAktifController::class);
     Route::patch('mahasiswa-aktif/{mahasiswaAktif}/verify', [MahasiswaAktifController::class, 'verify'])->name('mahasiswa-aktif.verify');
     Route::patch('mahasiswa-aktif/{mahasiswaAktif}/reject', [MahasiswaAktifController::class, 'reject'])->name('mahasiswa-aktif.reject');
+});
+
+// route for pkl
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('pkl', PKLController::class);
+    Route::patch('pkl/{pkl}/verify', [PKLController::class, 'verify'])->name('pkl.verify');
+    Route::patch('pkl/{pkl}/reject', [PKLController::class, 'reject'])->name('pkl.reject');
 });
 
 require __DIR__.'/auth.php';
