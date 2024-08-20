@@ -43,4 +43,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function mahasiswaAktif()
+    {
+        return $this->hasMany(MahasiswaAktif::class, 'mahasiswa_id');
+    }
+
+    public function verifier()
+    {
+        return $this->hasMany(MahasiswaAktif::class, 'verified_by');
+    }
 }
