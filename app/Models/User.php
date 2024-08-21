@@ -63,4 +63,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(PKL::class, 'verified_by');
     }
+
+    public function penelitian()
+    {
+        return $this->hasMany(Penelitian::class, 'mahasiswa_id');
+    }
+
+    public function verifierPenelitian()
+    {
+        return $this->hasMany(Penelitian::class, 'verified_by');
+    }
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MahasiswaAktifController;
 use App\Http\Controllers\PKLController;
+use App\Http\Controllers\PenelitianController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,6 +48,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('pkl', PKLController::class);
     Route::patch('pkl/{pkl}/verify', [PKLController::class, 'verify'])->name('pkl.verify');
     Route::patch('pkl/{pkl}/reject', [PKLController::class, 'reject'])->name('pkl.reject');
+});
+
+// route for penelitian
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('penelitian', PenelitianController::class);
+    Route::patch('penelitian/{penelitian}/verify', [PenelitianController::class, 'verify'])->name('penelitian.verify');
+    Route::patch('penelitian/{penelitian}/reject', [PenelitianController::class, 'reject'])->name('penelitian.reject');
 });
 
 require __DIR__.'/auth.php';
