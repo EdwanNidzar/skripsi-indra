@@ -7,6 +7,7 @@ use App\Http\Controllers\PeminjamanAulaController;
 use App\Http\Controllers\PKLController;
 use App\Http\Controllers\PenelitianController;
 use App\Http\Controllers\CutiMahasiswaController;
+use App\Http\Controllers\CutiDosenController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -71,6 +72,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('cuti-mahasiswa', CutiMahasiswaController::class);
     Route::patch('cuti-mahasiswa/{cutiMahasiswa}/verify', [CutiMahasiswaController::class, 'verify'])->name('cuti-mahasiswa.verify');
     Route::patch('cuti-mahasiswa/{cutiMahasiswa}/reject', [CutiMahasiswaController::class, 'reject'])->name('cuti-mahasiswa.reject');
+});
+
+// route for cuti dosen
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('cuti-dosen', CutiDosenController::class);
+    Route::patch('cuti-dosen/{cutiDosen}/verify', [CutiDosenController::class, 'verify'])->name('cuti-dosen.verify');
+    Route::patch('cuti-dosen/{cutiDosen}/reject', [CutiDosenController::class, 'reject'])->name('cuti-dosen.reject');
 });
 
 require __DIR__.'/auth.php';
