@@ -6,6 +6,7 @@ use App\Http\Controllers\MahasiswaAktifController;
 use App\Http\Controllers\PeminjamanAulaController;
 use App\Http\Controllers\PKLController;
 use App\Http\Controllers\PenelitianController;
+use App\Http\Controllers\CutiMahasiswaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('dashboard');
 });
 
 Route::get('/dashboard', function () {
@@ -63,6 +64,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('peminjaman-aula', PeminjamanAulaController::class);
     Route::patch('peminjaman-aula/{peminjaman_aula}/verify', [PeminjamanAulaController::class, 'verify'])->name('peminjaman-aula.verify');
     Route::patch('peminjaman-aula/{peminjaman_aula}/reject', [PeminjamanAulaController::class, 'reject'])->name('peminjaman-aula.reject');
+});
+
+// route for cuti mahasiswa
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('cuti-mahasiswa', CutiMahasiswaController::class);
+    Route::patch('cuti-mahasiswa/{cutiMahasiswa}/verify', [CutiMahasiswaController::class, 'verify'])->name('cuti-mahasiswa.verify');
+    Route::patch('cuti-mahasiswa/{cutiMahasiswa}/reject', [CutiMahasiswaController::class, 'reject'])->name('cuti-mahasiswa.reject');
 });
 
 require __DIR__.'/auth.php';

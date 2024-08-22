@@ -76,6 +76,20 @@
       </li>
 
       <li class="relative px-6 py-3">
+        <x-nav-link href="{{ route('cuti-mahasiswa.index') }}" :active="request()->routeIs('cuti-mahasiswa.*')">
+          <x-slot name="icon">
+            <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round"
+              stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+              <path
+                d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z">
+              </path>
+            </svg>
+          </x-slot>
+          {{ __('Cuti Mahasiswa') }}
+        </x-nav-link>
+      </li>
+
+      <li class="relative px-6 py-3">
         <x-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.index')">
           <x-slot name="icon">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -121,8 +135,9 @@
           </svg>
         </button>
         <template x-if="isMultiLevelMenuOpen">
-          <ul x-transition:enter="transition-all ease-in-out duration-300" x-transition:enter-start="opacity-25 max-h-0"
-            x-transition:enter-end="opacity-100 max-h-xl" x-transition:leave="transition-all ease-in-out duration-300"
+          <ul x-transition:enter="transition-all ease-in-out duration-300"
+            x-transition:enter-start="opacity-25 max-h-0" x-transition:enter-end="opacity-100 max-h-xl"
+            x-transition:leave="transition-all ease-in-out duration-300"
             x-transition:leave-start="opacity-100 max-h-xl" x-transition:leave-end="opacity-0 max-h-0"
             class="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900"
             aria-label="submenu">
