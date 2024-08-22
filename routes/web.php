@@ -3,6 +3,7 @@
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MahasiswaAktifController;
+use App\Http\Controllers\PeminjamanAulaController;
 use App\Http\Controllers\PKLController;
 use App\Http\Controllers\PenelitianController;
 use Illuminate\Support\Facades\Route;
@@ -55,6 +56,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('penelitian', PenelitianController::class);
     Route::patch('penelitian/{penelitian}/verify', [PenelitianController::class, 'verify'])->name('penelitian.verify');
     Route::patch('penelitian/{penelitian}/reject', [PenelitianController::class, 'reject'])->name('penelitian.reject');
+});
+
+// route for peminjam
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('peminjaman-aula', PeminjamanAulaController::class);
+    Route::patch('peminjaman-aula/{peminjaman_aula}/verify', [PeminjamanAulaController::class, 'verify'])->name('peminjaman-aula.verify');
+    Route::patch('peminjaman-aula/{peminjaman_aula}/reject', [PeminjamanAulaController::class, 'reject'])->name('peminjaman-aula.reject');
 });
 
 require __DIR__.'/auth.php';

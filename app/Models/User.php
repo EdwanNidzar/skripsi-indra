@@ -73,4 +73,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Penelitian::class, 'verified_by');
     }
+
+    public function peminjamanAula()
+    {
+        return $this->hasMany(PeminjamanAula::class, 'peminjam_id');
+    }
+
+    public function verifierPeminjamanAula()
+    {
+        return $this->hasMany(PeminjamanAula::class, 'verified_by');
+    }
 }
