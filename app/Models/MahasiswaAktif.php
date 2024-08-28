@@ -10,7 +10,7 @@ class MahasiswaAktif extends Model
     use HasFactory;
 
     protected $table = 'mahasiswa_aktifs';
-    protected $fillable = ['nomor_surat', 'tujuan_surat', 'status', 'mahasiswa_id', 'verified_by'];
+    protected $fillable = ['nomor_surat', 'tujuan_surat', 'file_surat', 'status', 'mahasiswa_id', 'verified_by'];
 
     public function mahasiswa()
     {

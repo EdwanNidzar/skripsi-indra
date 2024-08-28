@@ -58,6 +58,7 @@
               <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase bg-gray-50 border-b">
                 <th class="px-4 py-3">Nomor Surat</th>
                 <th class="px-4 py-3">Status</th>
+                <th class="px-4 py-3">Lihat SUrat</th>
                 <th class="px-4 py-3">Action</th>
               </tr>
             </thead>
@@ -69,6 +70,9 @@
                   </td>
                   <td class="px-4 py-3 text-sm">
                     {{ $mhs->status }}
+                  </td>
+                  <td class="px-4 py-3 text-sm">
+                    <a href="storage/surat_pendamping/{{ $mhs->file_surat }}" target="_blank" class="underline text-blue-500">Lihat Surat Pendamping</a>
                   </td>
                   <td class="px-4 py-3 text-sm flex space-x-2">
                     <a href="{{ route('mahasiswa-aktif.show', $mhs->id) }}"

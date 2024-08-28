@@ -32,12 +32,17 @@
             value="{{ $mahasiswaAktif->status }}">
         </div>
 
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Surat Pendamping</label>
+          @if ($mahasiswaAktif->file_surat)
+            <iframe src="{{ asset('storage/surat_pendamping/' . $mahasiswaAktif->file_surat) }}" width="100%"
+              height="600px" frameborder="0"></iframe>
+          @else
+            <p class="text-sm text-gray-500">Tidak ada surat pendamping yang diunggah.</p>
+          @endif
+        </div>
       </div>
       <div class="flex justify-end mt-4">
-        <button type="submit"
-          class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
-          Simpan
-        </button>
         <a href="{{ route('mahasiswa-aktif.index') }}"
           class="px-4 py-2 ml-2 text-sm font-medium leading-5 text-gray-700 transition-colors duration-150 bg-white border border-gray-300 rounded-lg active:bg-gray-100 hover:bg-gray-200 focus:outline-none focus:shadow-outline-gray">
           Kembali

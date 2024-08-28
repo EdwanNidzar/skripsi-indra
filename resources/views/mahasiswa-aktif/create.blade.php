@@ -4,15 +4,27 @@
   </x-slot>
 
   <div class="p-4 bg-white rounded-lg shadow-xs">
-    <form action="{{ route('mahasiswa-aktif.store') }}" method="POST">
+    <form action="{{ route('mahasiswa-aktif.store') }}" method="POST" enctype="multipart/form-data">
       @csrf
       <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-1">
 
         <div>
           <label for="tujuan_surat" class="block text-sm font-medium text-gray-700">Tujuan Surat</label>
-          <textarea name="tujuan_surat" id="tujuan_surat" cols="30" rows="10"class="block w-full px-3 py-2 mt-1 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Tujuan Surat"></textarea>
-          
+          <textarea name="tujuan_surat" id="tujuan_surat" cols="30"
+            rows="10"class="block w-full px-3 py-2 mt-1 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            placeholder="Tujuan Surat"></textarea>
+
           @error('tujuan_surat')
+            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+          @enderror
+        </div>
+
+        <div>
+          <label for="surat_pendamping" class="block text-sm font-medium text-gray-700">Surat Pendamping</label>
+          <input type="file" name="surat_pendamping" id="surat_pendamping"
+            class="block w-full px-3 py-2 mt-1 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+
+          @error('surat_pendamping')
             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
           @enderror
         </div>

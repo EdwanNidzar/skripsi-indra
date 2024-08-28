@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nomor_surat');
             $table->text('tujuan_surat');
+            $table->string('file_surat');
             $table->enum('status', ['approve', 'reject', 'pending'])->default('pending');
             $table->unsignedBigInteger('mahasiswa_id');
             $table->unsignedBigInteger('verified_by')->nullable();

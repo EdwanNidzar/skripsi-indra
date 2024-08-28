@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\MahasiswaAktif;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class MahasiswaAktifController extends Controller
 {
@@ -63,11 +64,17 @@ class MahasiswaAktifController extends Controller
     {
         $request->validate([
             'tujuan_surat' => 'required',
+            'surat_pendamping' => 'required|file|mimes:pdf|max:2048',
         ]);
 
         $mhs = new MahasiswaAktif();
         $mhs->nomor_surat = $this->nomor_surat();
         $mhs->tujuan_surat = $request->tujuan_surat;
+        
+        $file = $request->file('surat_pendamping');
+        $file->storeAs('public/surat_pendamping', $file->hashName());
+        $mhs->file_surat = $file->hashName();
+
         $mhs->mahasiswa_id = auth()->id();
 
         if ($mhs->save()) {
@@ -104,11 +111,24 @@ class MahasiswaAktifController extends Controller
 
         $mahasiswaAktif->nomor_surat = $request->nomor_surat;
         $mahasiswaAktif->tujuan_surat = $request->tujuan_surat;
+
+        if ($request->hasFile('surat_pendamping')) {
+            // Hapus file lama jika ada
+            if ($mahasiswaAktif->file_surat) {
+                Storage::delete('public/surat_pendamping/' . $mahasiswaAktif->file_surat);
+            }
+
+            $file = $request->file('surat_pendamping');
+            $file->storeAs('public/surat_pendamping', $file->hashName());
+            $mahasiswaAktif->file_surat = $file->hashName();
+        }
+
         $mahasiswaAktif->mahasiswa_id = auth()->id();
 
         if ($mahasiswaAktif->save()) {
-            return redirect()->route('mahasiswa-aktif.index')->with('success', 'Data Barhasil Diupdate.');
+            return redirect()->route('mahasiswa-aktif.index')->with('success', 'Data Berhasil Diupdate.');
         }
+
         return redirect()->route('mahasiswa-aktif.index')->with('error', 'Data Gagal Diupdate.');
     }
 
