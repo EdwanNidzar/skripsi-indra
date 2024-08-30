@@ -83,6 +83,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('cuti-dosen', CutiDosenController::class);
     Route::patch('cuti-dosen/{cutiDosen}/verify', [CutiDosenController::class, 'verify'])->name('cuti-dosen.verify');
     Route::patch('cuti-dosen/{cutiDosen}/reject', [CutiDosenController::class, 'reject'])->name('cuti-dosen.reject');
+    Route::get('cuti-dosen-report', [CutiDosenController::class, 'report'])->name('cuti-dosen.report');
+    Route::get('cuti-dosen-report-by-id/{cutiDosen}', [CutiDosenController::class, 'reportById'])->name('cuti-dosen.report-by-id');
 });
 
 require __DIR__.'/auth.php';

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\CutiDosen;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CutiDosenController extends Controller
 {
@@ -12,7 +14,11 @@ class CutiDosenController extends Controller
      */
     public function index()
     {
-        $cutiDosen = CutiDosen::paginate(10);
+        if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('karyawan')) {
+            $cutiDosen = CutiDosen::paginate(10);
+        } else {
+            $cutiDosen = CutiDosen::where('dosen_id', Auth::id())->paginate(10);
+        }
         return view('cuti-dosen.index', compact('cutiDosen'));
     }
 
@@ -164,5 +170,24 @@ class CutiDosenController extends Controller
         } else {
             return redirect()->route('cuti-dosen.index')->with('error', 'Pengajuan cuti gagal ditolak');
         }
+    }
+
+    /**
+     * PRINT PDF
+     */
+    public function report()
+    {
+        $cutiDosen = CutiDosen::where('status', 'approved')->get();
+        $pdf = PDF::loadView('cuti-dosen.report', compact('cutiDosen'));
+        return $pdf->stream('report-cuti-dosen.pdf');
+    }
+
+    /**
+     * PRINT PDF BY ID
+     */
+    public function reportById(CutiDosen $cutiDosen)
+    {
+        $pdf = PDF::loadView('cuti-dosen.report-by-id', compact('cutiDosen'));
+        return $pdf->stream('report-cuti-dosen-by-id.pdf');
     }
 }
