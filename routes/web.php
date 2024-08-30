@@ -44,6 +44,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('mahasiswa-aktif', MahasiswaAktifController::class);
     Route::patch('mahasiswa-aktif/{mahasiswaAktif}/verify', [MahasiswaAktifController::class, 'verify'])->name('mahasiswa-aktif.verify');
     Route::patch('mahasiswa-aktif/{mahasiswaAktif}/reject', [MahasiswaAktifController::class, 'reject'])->name('mahasiswa-aktif.reject');
+    Route::get('mahasiswa-aktif-report', [MahasiswaAktifController::class, 'report'])->name('mahasiswa-aktif.report');
+    Route::get('mahasiswa-aktif-report-by-id/{mahasiswaAktif}', [MahasiswaAktifController::class, 'reportById'])->name('mahasiswa-aktif.report-by-id');
 });
 
 // route for pkl

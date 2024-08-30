@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\MahasiswaAktif;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class MahasiswaAktifController extends Controller
 {
@@ -13,7 +15,11 @@ class MahasiswaAktifController extends Controller
      */
     public function index()
     {
-        $mahasiswaAktifs = MahasiswaAktif::paginate(10);
+        if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('karyawan')) {
+            $mahasiswaAktifs = MahasiswaAktif::paginate(10);
+        } else {
+            $mahasiswaAktifs = MahasiswaAktif::where('mahasiswa_id', Auth::id())->paginate(10);
+        }
         return view('mahasiswa-aktif.index', compact('mahasiswaAktifs'));
     }
 
@@ -169,6 +175,25 @@ class MahasiswaAktifController extends Controller
             return redirect()->route('mahasiswa-aktif.index')->with('success', 'Data Barhasil Ditolak.');
         }
         return redirect()->route('mahasiswa-aktif.index')->with('error', 'Data Gagal Ditolak.');
+    }
+
+    /**
+     * PRINT PDF
+     */
+    public function report()
+    {
+        $mahasiswaAktifs = MahasiswaAktif::where('status', 'approve')->get();
+        $pdf = PDF::loadView('mahasiswa-aktif.report', compact('mahasiswaAktifs'));
+        return $pdf->stream('laporan-mahasiswa-aktif.pdf');
+    }
+
+    /**
+     * PRINT PDF BY ID
+     */
+    public function reportById(MahasiswaAktif $mahasiswaAktif)
+    {
+        $pdf = PDF::loadView('mahasiswa-aktif.report-by-id', compact('mahasiswaAktif'));
+        return $pdf->stream('surat-mahasiswa-aktif.pdf');
     }
 
 }
