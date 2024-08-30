@@ -8,6 +8,7 @@ use App\Http\Controllers\PKLController;
 use App\Http\Controllers\PenelitianController;
 use App\Http\Controllers\CutiMahasiswaController;
 use App\Http\Controllers\CutiDosenController;
+use App\Http\Controllers\SuratKeluarController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -91,6 +92,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('cuti-dosen/{cutiDosen}/reject', [CutiDosenController::class, 'reject'])->name('cuti-dosen.reject');
     Route::get('cuti-dosen-report', [CutiDosenController::class, 'report'])->name('cuti-dosen.report');
     Route::get('cuti-dosen-report-by-id/{cutiDosen}', [CutiDosenController::class, 'reportById'])->name('cuti-dosen.report-by-id');
+});
+
+// route for surat keluar
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('surat-keluar-report', [SuratKeluarController::class, 'report'])->name('surat-keluar.report');
 });
 
 require __DIR__.'/auth.php';
