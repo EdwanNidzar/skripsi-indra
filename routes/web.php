@@ -58,6 +58,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('penelitian', PenelitianController::class);
     Route::patch('penelitian/{penelitian}/verify', [PenelitianController::class, 'verify'])->name('penelitian.verify');
     Route::patch('penelitian/{penelitian}/reject', [PenelitianController::class, 'reject'])->name('penelitian.reject');
+    Route::get('penelitian-report', [PenelitianController::class, 'report'])->name('penelitian.report');
+    Route::get('penelitian-report-by-id/{penelitian}', [PenelitianController::class, 'reportById'])->name('penelitian.report-by-id');
 });
 
 // route for peminjam

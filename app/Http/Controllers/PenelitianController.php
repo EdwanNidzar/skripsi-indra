@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Penelitian;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PenelitianController extends Controller
 {
@@ -165,6 +166,25 @@ class PenelitianController extends Controller
         } else {
             return redirect()->route('penelitian.index')->with('error', 'Penelitian gagal ditolak');
         }
+    }
+
+    /**
+     * Report the specified resource.
+     */
+    public function report()
+    {
+        $penelitians = Penelitian::all();
+        $pdf = PDF::loadView('penelitian.report', compact('penelitians'));
+        return $pdf->stream('penelitian-report.pdf');   
+    }
+
+    /**
+     * report per id.
+     */
+    public function reportById(Penelitian $penelitian)
+    {
+        $pdf = PDF::loadView('penelitian.report-by-id', compact('penelitian'));
+        return $pdf->stream('penelitian-report-by-id.pdf');
     }
 
 }
