@@ -53,6 +53,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('pkl', PKLController::class);
     Route::patch('pkl/{pkl}/verify', [PKLController::class, 'verify'])->name('pkl.verify');
     Route::patch('pkl/{pkl}/reject', [PKLController::class, 'reject'])->name('pkl.reject');
+    Route::get('pkl-report', [PKLController::class, 'report'])->name('pkl.report');
+    Route::get('pkl-report-by-id/{pkl}', [PKLController::class, 'reportById'])->name('pkl.report-by-id');
 });
 
 // route for penelitian

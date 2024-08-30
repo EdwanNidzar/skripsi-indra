@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\PKL;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PKLController extends Controller
 {
@@ -13,7 +15,11 @@ class PKLController extends Controller
      */
     public function index()
     {
-        $pkl = PKL::paginate(10);
+        if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('karyawan')) {
+            $pkl = PKL::paginate(10);
+        } else {
+            $pkl = PKL::where('mahasiswa_id', Auth::id())->paginate(10);
+        }
         return view('pkl.index', compact('pkl'));
     }
 
@@ -208,5 +214,25 @@ class PKLController extends Controller
         } else {
             return redirect()->route('pkl.index')->with('error', 'Data gagal ditolak');
         }
+    }
+
+    /**
+     * PRINT PDF
+     */
+    public function report()
+    {
+        
+        $pkl = PKL::where('status', 'approved')->get();
+        $pdf = PDF::loadView('pkl.report', compact('pkl'));
+        return $pdf->stream('pkl-report.pdf');
+    }
+
+    /**
+     * PRINT PDF BY ID
+     */
+    public function reportById(PKL $pkl)
+    {
+        $pdf = PDF::loadView('pkl.report-by-id', compact('pkl'));
+        return $pdf->stream('pkl-report-by-id.pdf');
     }
 }
