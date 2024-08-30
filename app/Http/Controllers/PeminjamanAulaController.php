@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\PeminjamanAula;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PeminjamanAulaController extends Controller
 {
@@ -12,7 +14,11 @@ class PeminjamanAulaController extends Controller
      */
     public function index()
     {
-        $peminjamanAula = PeminjamanAula::with('peminjam')->paginate(10);
+        if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('karyawan')) {
+            $peminjamanAula = PeminjamanAula::with('peminjam')->paginate(10);
+        } else {
+            $peminjamanAula = PeminjamanAula::with('peminjam')->where('peminjam_id', Auth::id())->paginate(10);
+        }
         return view('peminjaman-aula.index', compact('peminjamanAula'));
     }
 
@@ -185,5 +191,24 @@ class PeminjamanAulaController extends Controller
         } else {
             return redirect()->route('peminjaman-aula.index')->with('error', 'Data Gagal Ditolak.');
         }
+    }
+
+    /**
+     * PRINT PDF
+     */
+    public function report()
+    {
+        $peminjamanAula = PeminjamanAula::where('status', 'approve')->get();
+        $pdf = PDF::loadView('peminjaman-aula.report', compact('peminjamanAula'));
+        return $pdf->stream('peminjaman-aula-report.pdf');
+    }
+
+    /**
+     * PRINT PDF BY ID
+     */
+    public function reportById(PeminjamanAula $peminjaman_aula)
+    {
+        $pdf = PDF::loadView('peminjaman-aula.report-by-id', compact('peminjaman_aula'));
+        return $pdf->stream('peminjaman-aula-report-by-id.pdf');
     }
 }

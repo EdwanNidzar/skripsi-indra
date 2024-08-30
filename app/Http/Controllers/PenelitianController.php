@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Penelitian;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class PenelitianController extends Controller
@@ -13,7 +14,11 @@ class PenelitianController extends Controller
      */
     public function index()
     {
-        $penelitians = Penelitian::paginate(10);
+        if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('karyawan')) {
+            $penelitians = Penelitian::paginate(10);
+        } else {
+            $penelitians = Penelitian::where('mahasiswa_id', Auth::id())->paginate(10);
+        }
         return view('penelitian.index', compact('penelitians'));
     }
 

@@ -71,6 +71,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('peminjaman-aula', PeminjamanAulaController::class);
     Route::patch('peminjaman-aula/{peminjaman_aula}/verify', [PeminjamanAulaController::class, 'verify'])->name('peminjaman-aula.verify');
     Route::patch('peminjaman-aula/{peminjaman_aula}/reject', [PeminjamanAulaController::class, 'reject'])->name('peminjaman-aula.reject');
+    Route::get('peminjaman-aula-report', [PeminjamanAulaController::class, 'report'])->name('peminjaman-aula.report');
+    Route::get('peminjaman-aula-report-by-id/{peminjaman_aula}', [PeminjamanAulaController::class, 'reportById'])->name('peminjaman-aula.report-by-id');
 });
 
 // route for cuti mahasiswa
