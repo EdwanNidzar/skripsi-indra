@@ -74,6 +74,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('cuti-mahasiswa', CutiMahasiswaController::class);
     Route::patch('cuti-mahasiswa/{cutiMahasiswa}/verify', [CutiMahasiswaController::class, 'verify'])->name('cuti-mahasiswa.verify');
     Route::patch('cuti-mahasiswa/{cutiMahasiswa}/reject', [CutiMahasiswaController::class, 'reject'])->name('cuti-mahasiswa.reject');
+    Route::get('cuti-mahasiswa-report', [CutiMahasiswaController::class, 'report'])->name('cuti-mahasiswa.report');
+    Route::get('cuti-mahasiswa-report-by-id/{cutiMahasiswa}', [CutiMahasiswaController::class, 'reportById'])->name('cuti-mahasiswa.report-by-id');
 });
 
 // route for cuti dosen

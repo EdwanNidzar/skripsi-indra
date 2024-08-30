@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\CutiMahasiswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CutiMahasiswaController extends Controller
 {
@@ -12,7 +14,11 @@ class CutiMahasiswaController extends Controller
      */
     public function index()
     {
-        $cutiMahasiswas = CutiMahasiswa::paginate(10);
+        if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('karyawan')) {
+            $cutiMahasiswas = CutiMahasiswa::paginate(10);
+        } else {
+            $cutiMahasiswas = CutiMahasiswa::where('mahasiswa_id', Auth::id())->paginate(10);
+        }
         return view('cuti-mahasiswa.index', compact('cutiMahasiswas'));
     }
 
@@ -166,5 +172,24 @@ class CutiMahasiswaController extends Controller
         } else {
             return redirect()->route('cuti-mahasiswa.index')->with('error', 'Pengajuan cuti gagal ditolak');
         }
+    }
+
+    /**
+     * PRINT PDF
+     */
+    public function report()
+    {
+        $cutiMahasiswas = CutiMahasiswa::where('status', 'approved')->get();
+        $pdf = PDF::loadView('cuti-mahasiswa.report', compact('cutiMahasiswas'));
+        return $pdf->stream('cuti-mahasiswa-report.pdf');
+    }
+
+    /**
+     * PRINT PDF BY ID
+     */
+    public function reportById(CutiMahasiswa $cutiMahasiswa)
+    {
+        $pdf = PDF::loadView('cuti-mahasiswa.report-by-id', compact('cutiMahasiswa'));
+        return $pdf->stream('cuti-mahasiswa-report-by-id.pdf');
     }
 }
