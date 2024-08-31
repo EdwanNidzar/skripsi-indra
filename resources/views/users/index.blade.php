@@ -24,14 +24,14 @@
             <div class="overflow-x-auto w-full">
                 <table class="w-full whitespace-no-wrap">
                     <thead>
-                    <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase bg-gray-50 border-b">
+                    <tr class="text-xs font-semibold tracking-wide text-center text-gray-700 uppercase bg-blue-50 border-b">
                         <th class="px-4 py-3">Name</th>
                         <th class="px-4 py-3">Email</th>
                     </tr>
                     </thead>
                     <tbody class="bg-white divide-y">
                     @foreach($users as $user)
-                        <tr class="text-gray-700">
+                        <tr class="text-gray-700 text-center">
                             <td class="px-4 py-3 text-sm">
                                 {{ $user->name }}
                             </td>

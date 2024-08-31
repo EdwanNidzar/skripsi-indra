@@ -76,7 +76,7 @@ class MahasiswaAktifController extends Controller
         $mhs = new MahasiswaAktif();
         $mhs->nomor_surat = $this->nomor_surat();
         $mhs->tujuan_surat = $request->tujuan_surat;
-        
+
         $file = $request->file('surat_pendamping');
         $file->storeAs('public/surat_pendamping', $file->hashName());
         $mhs->file_surat = $file->hashName();
@@ -153,7 +153,7 @@ class MahasiswaAktifController extends Controller
      * Verify the specified resource from storage.
      */
     public function verify(MahasiswaAktif $mahasiswaAktif)
-    {        
+    {
         $mahasiswaAktif->status = 'approve';
         $mahasiswaAktif->verified_by = auth()->id();
 
@@ -195,5 +195,4 @@ class MahasiswaAktifController extends Controller
         $pdf = PDF::loadView('mahasiswa-aktif.report-by-id', compact('mahasiswaAktif'));
         return $pdf->stream('surat-mahasiswa-aktif.pdf');
     }
-
 }

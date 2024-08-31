@@ -76,7 +76,7 @@ class PeminjamanAulaController extends Controller
             'prodi' => 'required|string',
             'no_hp' => 'required|string',
             'keperluan' => 'required|string',
-        ]);        
+        ]);
 
         $peminjamanAula = new PeminjamanAula();
         $peminjamanAula->nomor_surat = $this->nomor_surat();
@@ -148,7 +148,7 @@ class PeminjamanAulaController extends Controller
         } else {
             return redirect()->route('peminjaman-aula.index')->with('error', 'Data Gagal Disimpan.');
         }
-        
+
     }
 
     /**
@@ -160,7 +160,7 @@ class PeminjamanAulaController extends Controller
             return redirect()->route('peminjaman-aula.index')->with('success', 'Data Berhasil Dihapus.');
         } else {
             return redirect()->route('peminjaman-aula.index')->with('error', 'Data Gagal Dihapus.');
-        }   
+        }
     }
 
     /**
@@ -198,8 +198,9 @@ class PeminjamanAulaController extends Controller
      */
     public function report()
     {
-        $peminjamanAula = PeminjamanAula::where('status', 'approve')->get();
-        $pdf = PDF::loadView('peminjaman-aula.report', compact('peminjamanAula'));
+        $peminjamanAula = PeminjamanAula::where('status', 'approved')->get();
+        $pdf = PDF::loadView('peminjaman-aula.report', compact('peminjamanAula'))
+        ->setPaper('A4', 'landscape');
         return $pdf->stream('peminjaman-aula-report.pdf');
     }
 

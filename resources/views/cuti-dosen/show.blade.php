@@ -1,73 +1,74 @@
 <x-app-layout>
-  <x-slot name="header">
-    {{ __('Detail Pengajuan Cuti Dosen') }}
-  </x-slot>
+    <x-slot name="header">
+        {{ __('Detail Pengajuan Cuti Dosen') }}
+    </x-slot>
 
-  <div class="p-4 bg-white rounded-lg shadow-xs">
-    <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+    <div class="p-4 bg-white rounded-lg shadow-xs">
+        <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
 
-      {{-- Nomor Surat --}}
-      <div class="sm:col-span-2">
-        <label for="nomor_surat" class="block text-sm font-medium text-gray-700">Nomor Surat</label>
-        <p id="nomor_surat" class="mt-1 p-2">
-          {{ $cutiDosen->nomor_surat }}
-        </p>
-      </div>
+            {{-- Nomor Surat --}}
+            <div>
+                <label for="nomor_surat" class="block text-sm font-semibold text-gray-700">Nomor Surat</label>
+                <p class="mt-1 text-sm text-gray-900">{{ $cutiDosen->nomor_surat }}</p>
+            </div>
 
-      {{-- Alasan Cuti --}}
-      <div class="sm:col-span-2">
-        <label for="alasan_cuti" class="block text-sm font-medium text-gray-700">Alasan Cuti</label>
-        <p id="alasan_cuti" class="mt-1 p-2">
-          {{ $cutiDosen->alasan_cuti }}
-        </p>
-      </div>
+            {{-- Alasan Cuti --}}
+            <div>
+                <label for="alasan_cuti" class="block text-sm font-semibold text-gray-700">Alasan Cuti</label>
+                <p class="mt-1 text-sm text-gray-900">{{ $cutiDosen->alasan_cuti }}</p>
+            </div>
 
-      {{-- Tanggal Mulai --}}
-      <div>
-        <label for="tanggal_mulai" class="block text-sm font-medium text-gray-700">Tanggal Mulai</label>
-        <p id="tanggal_mulai" class="mt-1 p-2">
-          {{ $cutiDosen->tanggal_mulai }}
-        </p>
-      </div>
+            {{-- Tanggal Mulai --}}
+            <div>
+                <label for="tanggal_mulai" class="block text-sm font-semibold text-gray-700">Tanggal Mulai</label>
+                <p class="mt-1 text-sm text-gray-900">
+                    {{ \Carbon\Carbon::parse($cutiDosen->tanggal_mulai)->format('d M Y') }}
+                </p>
+            </div>
 
-      {{-- Tanggal Selesai --}}
-      <div>
-        <label for="tanggal_selesai" class="block text-sm font-medium text-gray-700">Tanggal Selesai</label>
-        <p id="tanggal_selesai" class="mt-1 p-2">
-          {{ $cutiDosen->tanggal_selesai }}
-        </p>
-      </div>
+            {{-- Tanggal Selesai --}}
+            <div>
+                <label for="tanggal_selesai" class="block text-sm font-semibold text-gray-700">Tanggal Selesai</label>
+                <p class="mt-1 text-sm text-gray-900">
+                    {{ \Carbon\Carbon::parse($cutiDosen->tanggal_selesai)->format('d M Y') }}
+                </p>
+            </div>
 
-      {{-- jumlah hari --}}
-      <div class="sm:col-span-2">
-        <label for="jumlah_hari" class="block text-sm font-medium text-gray-700">Jumlah Hari</label>
-        <p id="jumlah_hari" class="mt-1 p-2">
-          {{ $cutiDosen->jumlah_hari }} Hari
-        </p>
-      </div>
+            {{-- jumlah hari --}}
+            <div>
+                <label for="jumlah_hari" class="block text-sm font-semibold text-gray-700">Jumlah Hari</label>
+                <p class="mt-1 text-sm text-gray-900">{{ $cutiDosen->jumlah_hari }} Hari</p>
+            </div>
 
-      {{-- status --}}
-      <div>
-        <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
-        <p id="status" class="mt-1 p-2">
-          {{ $cutiDosen->status }}
-        </p>
-      </div>
+            {{-- status --}}
+            <div>
+                <label for="status" class="block text-sm font-semibold text-gray-700">Status</label>
+                <p class="mt-1 text-sm text-gray-900">
+                    @if ($cutiDosen->status == 'pending')
+                        <span
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-500 text-white">
+                            Pending
+                        </span>
+                    @elseif ($cutiDosen->status == 'approved')
+                        <span
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-500 text-white">
+                            Accepted
+                        </span>
+                    @elseif ($cutiDosen->status == 'rejected')
+                        <span
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-500 text-white">
+                            Rejected
+                        </span>
+                    @endif
+                </p>
+            </div>
+        </div>
 
-      {{-- verifikator --}}
-      <div>
-        <label for="verifikator" class="block text-sm font-medium text-gray-700">Verifikator</label>
-        <p id="verifikator" class="mt-1 p-2">
-          {{ $cutiDosen->verifier ? $cutiDosen->verifier->name : 'BELUM DISETUJUI' }}
-        </p>
-      </div>
+        <div class="flex justify-end mt-4">
+            <a href="{{ route('cuti-dosen.index') }}"
+                class="px-4 py-2 text-sm font-medium leading-5 text-gray-700 transition-colors duration-150 bg-white border border-gray-300 rounded-lg active:bg-gray-100 hover:bg-gray-200 focus:outline-none focus:shadow-outline-gray">
+                Kembali
+            </a>
+        </div>
     </div>
-
-    <div class="flex justify-end mt-4">
-      <a href="{{ route('cuti-dosen.index') }}"
-        class="px-4 py-2 text-sm font-medium leading-5 text-gray-700 transition-colors duration-150 bg-white border border-gray-300 rounded-lg active:bg-gray-100 hover:bg-gray-200 focus:outline-none focus:shadow-outline-gray">
-        Kembali
-      </a>
-    </div>
-  </div>
 </x-app-layout>
