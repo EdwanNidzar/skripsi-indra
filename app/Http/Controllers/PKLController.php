@@ -71,29 +71,43 @@ class PKLController extends Controller
         $request->validate([
             'tempat_pkl' => 'required',
             'lama_pkl' => 'required',
-            'tanggal_mulai' => 'required',
-            'tanggal_selesai' => 'required',
-            'bukti_pembayaran' => 'required',
-            'surat_pernyataan' => 'required',
+            'tanggal_mulai' => 'required|date',
+            'tanggal_selesai' => 'required|date',
+            'bukti_pembayaran' => 'required|mimes:jpeg,png,jpg',
+            'surat_pernyataan' => 'required|mimes:pdf',
         ]);
 
+        // Hitung tanggal selesai di server
+        $tanggalMulai = new \DateTime($request->tanggal_mulai);
+        if ($request->lama_pkl == '2 bulan') {
+            $tanggalMulai->modify('+2 months');
+        } elseif ($request->lama_pkl == '3 bulan') {
+            $tanggalMulai->modify('+3 months');
+        }
+        $tanggalSelesai = $tanggalMulai->format('Y-m-d');
+
+        // Buat objek PKL baru
         $pkl = new PKL();
         $pkl->nomor_surat = $this->nomor_surat();
         $pkl->tempat_pkl = $request->tempat_pkl;
         $pkl->lama_pkl = $request->lama_pkl;
         $pkl->tanggal_mulai = $request->tanggal_mulai;
-        $pkl->tanggal_selesai = $request->tanggal_selesai;
+        $pkl->tanggal_selesai = $tanggalSelesai;
 
+        // Simpan file bukti pembayaran
         $bukti_pembayaran = $request->file('bukti_pembayaran');
         $bukti_pembayaran->storeAs('public/pkl/bukti_pembayaran', $bukti_pembayaran->hashName());
         $pkl->bukti_pembayaran = $bukti_pembayaran->hashName();
 
+        // Simpan file surat pernyataan
         $surat_pernyataan = $request->file('surat_pernyataan');
         $surat_pernyataan->storeAs('public/pkl/surat_pernyataan', $surat_pernyataan->hashName());
         $pkl->surat_pernyataan = $surat_pernyataan->hashName();
 
+        // Set ID mahasiswa
         $pkl->mahasiswa_id = auth()->id();
 
+        // Simpan data PKL ke database
         if ($pkl->save()) {
             return redirect()->route('pkl.index')->with('success', 'Data berhasil disimpan');
         } else {
@@ -125,18 +139,25 @@ class PKLController extends Controller
         $request->validate([
             'tempat_pkl' => 'required',
             'lama_pkl' => 'required',
-            'tanggal_mulai' => 'required',
-            'tanggal_selesai' => 'required',
+            'tanggal_mulai' => 'required|date',
             'bukti_pembayaran' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'surat_pernyataan' => 'nullable|mimes:pdf|max:2048',
         ]);
 
-        $pkl = PKL::find($pkl->id);
+        // Calculate tanggal_selesai based on tanggal_mulai and lama_pkl
+        $tanggalMulai = new \DateTime($request->tanggal_mulai);
+        if ($request->lama_pkl == '2 bulan') {
+            $tanggalMulai->modify('+2 months');
+        } elseif ($request->lama_pkl == '3 bulan') {
+            $tanggalMulai->modify('+3 months');
+        }
+        $tanggalSelesai = $tanggalMulai->format('Y-m-d');
 
+        // Update the model attributes
         $pkl->tempat_pkl = $request->tempat_pkl;
         $pkl->lama_pkl = $request->lama_pkl;
         $pkl->tanggal_mulai = $request->tanggal_mulai;
-        $pkl->tanggal_selesai = $request->tanggal_selesai;
+        $pkl->tanggal_selesai = $tanggalSelesai;
 
         // Update Bukti Pembayaran
         if ($request->hasFile('bukti_pembayaran')) {
@@ -164,6 +185,7 @@ class PKLController extends Controller
             $pkl->surat_pernyataan = $surat_pernyataan->hashName();
         }
 
+        // Save the updated model
         if ($pkl->save()) {
             return redirect()->route('pkl.index')->with('success', 'Data berhasil diupdate');
         } else {
