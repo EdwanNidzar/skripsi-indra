@@ -16,6 +16,7 @@ class Penelitian extends Model
         'judul',
         'tanggal_mulai',
         'tanggal_selesai',
+        'lama_penelitian',
         'mahasiswa_id',
         'status',
         'verified_by',

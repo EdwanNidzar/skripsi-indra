@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('judul');
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai');
+            $table->string('lama_penelitian');
             $table->unsignedBigInteger('mahasiswa_id');
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->unsignedBigInteger('verified_by')->nullable();

@@ -72,6 +72,7 @@ class PenelitianController extends Controller
             'judul' => 'required',
             'tanggal_mulai' => 'required',
             'tanggal_selesai' => 'required',
+            'lama_penelitian' => 'required',
         ]);
 
         $penelitian = new Penelitian();
@@ -80,6 +81,7 @@ class PenelitianController extends Controller
         $penelitian->judul = $request->judul;
         $penelitian->tanggal_mulai = $request->tanggal_mulai;
         $penelitian->tanggal_selesai = $request->tanggal_selesai;
+        $penelitian->lama_penelitian = $request->lama_penelitian;
         $penelitian->mahasiswa_id = auth()->id();
 
         if ($penelitian->save()) {
@@ -115,6 +117,7 @@ class PenelitianController extends Controller
             'judul' => 'required',
             'tanggal_mulai' => 'required',
             'tanggal_selesai' => 'required',
+            'lama_penelitian' => 'required',
         ]);
 
         $penelitian->nomor_surat = $request->nomor_surat;
@@ -122,6 +125,7 @@ class PenelitianController extends Controller
         $penelitian->judul = $request->judul;
         $penelitian->tanggal_mulai = $request->tanggal_mulai;
         $penelitian->tanggal_selesai = $request->tanggal_selesai;
+        $penelitian->lama_penelitian = $request->lama_penelitian;
         $penelitian->status = 'pending';
 
         if ($penelitian->save()) {
