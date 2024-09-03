@@ -19,6 +19,7 @@
                 </x-nav-link>
             </li>
 
+            @if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('karyawan') || auth()->user()->hasRole('mahasiswa'))
             <li class="relative px-6 py-3">
                 <x-nav-link href="{{ route('mahasiswa-aktif.index') }}" :active="request()->routeIs('mahasiswa-aktif.*')">
                     <x-slot name="icon">
@@ -83,7 +84,9 @@
                     {{ __('Cuti Mahasiswa') }}
                 </x-nav-link>
             </li>
+            @endif
 
+            @if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('karyawan') || auth()->user()->hasRole('dosen'))
             <li class="relative px-6 py-3">
                 <x-nav-link href="{{ route('cuti-dosen.index') }}" :active="request()->routeIs('cuti-dosen.*')">
                     <x-slot name="icon">
@@ -96,7 +99,9 @@
                     {{ __('Cuti Dosen') }}
                 </x-nav-link>
             </li>
+            @endif
 
+            @if (auth()->user()->hasRole('admin'))
             <li class="relative px-6 py-3">
                 <x-nav-link href="{{ route('surat-keluar.report') }}" :active="request()->routeIs('surat-keluar.report')" target="_blank">
                     <x-slot name="icon">
@@ -109,7 +114,9 @@
                     {{ __('Surat Keluar') }}
                 </x-nav-link>
             </li>
+            @endif
 
+            @if (auth()->user()->hasRole('admin'))
             <li class="relative px-6 py-3">
                 <x-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.index')">
                     <x-slot name="icon">
@@ -122,6 +129,7 @@
                     {{ __('Users') }}
                 </x-nav-link>
             </li>
+            @endif
         </ul>
     </div>
 </aside>
