@@ -69,13 +69,24 @@ class PeminjamanAulaController extends Controller
     {
         $request->validate([
             'tanggal_mulai' => 'required|date',
-            'tanggal_selesai' => 'required|date',
+            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
             'nama_penanggung_jawab' => 'required|string',
             'organisasi' => 'required|string',
             'jabatan' => 'required|string',
             'prodi' => 'required|string',
             'no_hp' => 'required|string',
             'keperluan' => 'required|string',
+            'tanggal_selesai' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) use ($request) {
+                    $startDate = \Carbon\Carbon::parse($request->tanggal_mulai);
+                    $endDate = \Carbon\Carbon::parse($value);
+                    if ($endDate->diffInDays($startDate) > 7) {
+                        $fail('Jumlah hari tidak boleh lebih dari 7 hari.');
+                    }
+                },
+            ],
         ]);
 
         $peminjamanAula = new PeminjamanAula();
@@ -91,8 +102,8 @@ class PeminjamanAulaController extends Controller
         $peminjamanAula->keperluan = $request->keperluan;
         $peminjamanAula->peminjam_id = auth()->id();
 
-        if ($peminjamanAula->save()){
-            return redirect()->route('peminjaman-aula.index')->with('success', 'Data Barhasil Disimpan.');
+        if ($peminjamanAula->save()) {
+            return redirect()->route('peminjaman-aula.index')->with('success', 'Data Berhasil Disimpan.');
         } else {
             return redirect()->route('peminjaman-aula.index')->with('error', 'Data Gagal Disimpan.');
         }
@@ -121,15 +132,25 @@ class PeminjamanAulaController extends Controller
     {
         $request->validate([
             'tanggal_mulai' => 'required|date',
-            'tanggal_selesai' => 'required|date',
+            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
             'nama_penanggung_jawab' => 'required|string',
             'organisasi' => 'required|string',
             'jabatan' => 'required|string',
             'prodi' => 'required|string',
             'no_hp' => 'required|string',
             'keperluan' => 'required|string',
+            'tanggal_selesai' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) use ($request) {
+                    $startDate = \Carbon\Carbon::parse($request->tanggal_mulai);
+                    $endDate = \Carbon\Carbon::parse($value);
+                    if ($endDate->diffInDays($startDate) > 7) {
+                        $fail('Jumlah hari tidak boleh lebih dari 7 hari.');
+                    }
+                },
+            ],
         ]);
-
         $peminjaman_aula->nomor_surat = $request->nomor_surat;
         $peminjaman_aula->tanggal_mulai = $request->tanggal_mulai;
         $peminjaman_aula->tanggal_selesai = $request->tanggal_selesai;
